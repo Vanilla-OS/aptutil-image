@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  aptutil:
+    image: ghcr.io/vanilla-os/aptutil:main
+    restart: unless-stopped
+
+    ports:
+      - "3142:3142"
+
+    volumes:
+      - /vos-apt-data:/var/lib/aptutil
+      - apt_mirror_data:/var/spool/go-apt-mirror
+      - apt_cacher_data:/var/spool/go-apt-cacher
+
+volumes:
+  apt_mirror_data:
+  apt_cacher_data:

@@ -9,7 +9,7 @@ services:
       - "3142:3142"
 
     volumes:
-      - /vos-apt-data/go-apt-cacher.toml:/etc/go-apt-cacher.toml:ro
+      - /vos-apt-data/mirror.toml:/etc/apt/mirror.toml:ro
       - /vos-apt-data/lib:/var/lib/aptutil
       - /vos-apt-data/mirror:/var/spool/go-apt-mirror
       - /vos-apt-data/cache:/var/spool/go-apt-cacher

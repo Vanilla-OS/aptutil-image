@@ -1,0 +1,51 @@
+name: aptutil
+id: aptutil
+vibversion: 1.0.0
+stages:
+- id: build
+  base: golang:1.15
+  singlelayer: false
+  labels:
+    maintainer: Vanilla OS Contributors
+  args:
+    DEBIAN_FRONTEND: noninteractive
+    CGO_ENABLED: 0
+    GODEBUG: netdns=go
+  runs:
+    commands:
+      - echo 'APT::Install-Recommends "0";' > /etc/apt/apt.conf.d/01norecommends
+
+  modules:
+  - name: aptutil
+    type: shell
+    commands:
+      - git clone https://github.com/Vanilla-OS/aptutil.git
+      - cd aptutil
+      - go install .
+
+  - name: ca-certificates
+    type: apt
+    sources:
+      - packages:
+        - ca-certificates
+
+- id: final
+  base: scratch
+  singlelayer: true
+  labels:
+    maintainer: Vanilla OS Contributors
+    
+  expose:
+    "3142": "tcp"
+    
+  copy:
+    - from: build
+      srcdst:
+        /go/bin/go-apt-cacher: /
+        /go/bin/go-apt-mirror: /
+        /etc/ssl/certs/ca-certificates.crt: /etc/ssl/certs/
+
+  cmd:
+    workdir: /var/lib/aptutil
+    exec:
+      - /go-apt-cacher

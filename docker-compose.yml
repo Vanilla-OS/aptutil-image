@@ -13,3 +13,4 @@ services:
       - /vos-apt-data/lib:/var/lib/aptutil
       - /vos-apt-data/mirror:/var/spool/go-apt-mirror
       - /vos-apt-data/cache:/var/spool/go-apt-cacher
+      - /vos-apt-data:/vos-apt-data

@@ -21,7 +21,7 @@ stages:
     commands:
       - git clone https://github.com/Vanilla-OS/aptutil.git
       - cd aptutil
-      - go install .
+      - go install ./...
 
   - name: ca-certificates
     type: apt
@@ -29,21 +29,15 @@ stages:
       - packages:
         - ca-certificates
 
-- id: final
-  base: scratch
-  singlelayer: true
-  labels:
-    maintainer: Vanilla OS Contributors
-    
-  expose:
-    "3142": "tcp"
-    
-  copy:
-    - from: build
-      srcdst:
-        /go/bin/go-apt-cacher: /
-        /go/bin/go-apt-mirror: /
-        /etc/ssl/certs/ca-certificates.crt: /etc/ssl/certs/
+  - name: cleanup
+    type: shell
+    commands:
+      - apt autoremove -y
+      - apt clean
+      - rm -rf /var/cache/*
+      - rm -rf /tmp/*
+      - rm -rf /var/tmp/*
+      - mkdir -p /var/cache/apt/archives/partial
 
   cmd:
     workdir: /var/lib/aptutil

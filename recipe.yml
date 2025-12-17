@@ -44,4 +44,4 @@ stages:
   cmd:
     workdir: /var/lib/aptutil
     exec:
-      - /go-apt-cacher
+      - /go-apt-mirror

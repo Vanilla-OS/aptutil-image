@@ -9,10 +9,6 @@ services:
       - "3142:3142"
 
     volumes:
-      - /vos-apt-data:/var/lib/aptutil
-      - apt_mirror_data:/var/spool/go-apt-mirror
-      - apt_cacher_data:/var/spool/go-apt-cacher
-
-volumes:
-  apt_mirror_data:
-  apt_cacher_data:
+      - /vos-apt-data/lib:/var/lib/aptutil
+      - /vos-apt-data/mirror:/var/spool/go-apt-mirror
+      - /vos-apt-data/cache:/var/spool/go-apt-cacher
